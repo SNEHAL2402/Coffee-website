@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Vending Machine</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #472c24; /* Coffee vending machine background color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #fff; /* Text color */
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white box background */
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #472c24; /* Coffee vending machine title color */
+            margin-bottom: 20px;
+        }
+
+        .coffee-menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .coffee-item {
+            text-align: center;
+            background-color: #472c24; /* Coffee item background color */
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff; /* Text color */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .coffee-item img {
+            max-width: 100%;
+            max-height: 100px; /* Adjust the maximum height as needed */
+        }
+
+        .coffee-item:hover {
+            background-color: #724a3f; /* Hover state color */
+        }
+
+        .coffee-name {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .quantity {
+            margin-top: 20px;
+        }
+
+        .proceed-button,
+        .cancel-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #724a3f; /* Button background color */
+            color: #fff; /* Button text color */
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .proceed-button:hover,
+        .cancel-button:hover {
+            background-color: #a97161; /* Hover state color */
+        }
+
+        .coffee-price {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            color: #999; /* Price text color */
+        }
+
+        .total-amount {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Here's The Menu  </h1>
+        <div class="coffee-menu">
+            <div class="coffee-item" data-price="99">
+                <img src="cappuccino.jpg" alt="Cappuccino">
+                <div class="coffee-name">Cappuccino (&#8377;99)</div>
+                <div class="coffee-price"></div>
+            </div>
+            <div class="coffee-item" data-price="119">
+                <img src="espresso.jpg" alt="Espresso">
+                <div class="coffee-name">Espresso (&#8377;119)</div>
+                <div class="coffee-price"></div>
+            </div>
+            <div class="coffee-item" data-price="139">
+                <img src="latte.jpg" alt="Latte">
+                <div class="coffee-name">Latte (&#8377;139)</div>
+                <div class="coffee-price"></div>
+            </div>
+        </div>
+        <div class="quantity">
+            <label for="coffee-quantity">Quantity:</label>
+            <input type="number" id="coffee-quantity" value="1" min="1">
+        </div>
+        <a href="#" id="proceed-button" class="proceed-button">Proceed</a>
+        <a href="1.html" class="cancel-button">Cancel</a>
+        <div class="total-amount">
+            Total Amount: &#8377;<span id="total-amount">0</span>
+        </div>
+    </div>
+    <script>
+        const coffeeItems = document.querySelectorAll('.coffee-item');
+        const quantityInput = document.getElementById('coffee-quantity');
+        const totalAmountSpan = document.getElementById('total-amount');
+        const proceedButton = document.getElementById('proceed-button');
+
+        let selectedCoffee = null;
+
+        coffeeItems.forEach(item => {
+            item.addEventListener('click', () => {
+                coffeeItems.forEach(otherItem => {
+                    otherItem.classList.remove('selected');
+                    const priceElement = otherItem.querySelector('.coffee-price');
+                    if (priceElement) {
+                        otherItem.removeChild(priceElement);
+                    }
+                });
+                item.classList.add('selected');
+                selectedCoffee = item;
+                updateTotalAmount();
+            });
+        });
+
+        quantityInput.addEventListener('input', updateTotalAmount);
+
+        function updateTotalAmount() {
+            if (selectedCoffee) {
+                const price = parseFloat(selectedCoffee.getAttribute('data-price'));
+                const quantity = parseInt(quantityInput.value);
+                const total = price * quantity;
+                totalAmountSpan.textContent = total.toFixed(0); // Display total without decimal places
+            }
+        }
+
+        proceedButton.addEventListener('click', () => {
+            // Get the total amount
+            const totalAmount = parseInt(totalAmountSpan.textContent);
+
+            // Pass the total amount as a query parameter to 3.html
+            const url = `3.html?totalAmount=${totalAmount}`;
+            window.location.href = url;
+        });
+    </script>
+</body>
+</html>

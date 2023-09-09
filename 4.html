@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #F5DEB3; /* Light brown background color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        /* Container styles */
+/* Container styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #F5DEB3; /* Light brown background color */
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+        h1 {
+            font-size: 24px;
+            color: #333; /* Text color */
+        }
+
+        .thank-you {
+            display: none; /* Initially hide the "Thank You" message */
+            font-size: 24px;
+            font-weight: bold;
+            color: #333; /* Text color */
+        }
+
+        .goto-homepage-button {
+            display: none; /* Initially hide the button */
+            background-color: #333; /* Button background color */
+            color: #FFFFFF; /* Text color */
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .loading-bar {
+            width: 0;
+            height: 10px;
+            background-color: green; /* Loading bar color */
+            margin-top: 20px;
+            transition: width 10s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Processing ......</h1>
+
+        <div class="thank-you">
+            Payment Successful 🥳🥳🎉 <br> THANK YOU
+        </div>
+
+        <button class="goto-homepage-button" onclick="gotoHomepage()">Go to Homepage</button>
+
+        <div class="loading-bar" id="loading-bar"></div>
+    </div>
+
+    <script>
+        const loadingBar = document.getElementById('loading-bar');
+        const thankYou = document.querySelector('.thank-you');
+        const button = document.querySelector('.goto-homepage-button');
+        const heading = document.querySelector('h1'); // Select the heading element
+
+        // Simulate loading from 1% to 100%
+        let percent = 1;
+        const interval = setInterval(() => {
+            loadingBar.style.width = percent + '%';
+            percent++;
+            if (percent > 100) {
+                clearInterval(interval);
+                // Hide the heading, show "Thank You" and the button after loading completes
+                heading.style.display = 'none'; // Hide the heading
+                loadingBar.style.display = 'none'; // Hide the loading bar
+                thankYou.style.display = 'block';
+                button.style.display = 'block';
+            }
+        }, 100);
+        
+        function gotoHomepage() {
+            // Redirect to the homepage (adjust the URL as needed)
+            window.location.href = "1.html";
+        }
+    </script>
+</body>
+</html>

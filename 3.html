@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Vending Machine - Payment</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('coffee_background.jpg'); /* Coffee vending machine background image */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #fff; /* Text color */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black box background */
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #a97161; /* Header text color */
+            margin-bottom: 20px;
+            background-color: #fff; /* Text box background color */
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .amount-due {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .currency-notes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .currency-note {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .note-image {
+            width: 150px; /* Increased image size */
+        }
+
+        .note-input {
+            width: 60px;
+            padding: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .total-amount {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #a97161; /* Total amount text color */
+            background-color: #fff; /* Text box background color */
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .remaining-balance {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #a97161; /* Remaining balance text color */
+            background-color: #fff; /* Text box background color */
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .continue-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #a97161; /* Button background color */
+            color: #fff; /* Button text color */
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .continue-button:hover {
+            background-color: #724a3f; /* Hover state color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amount Due:</h1>
+        <p class="amount-due"><span class="indian-currency-symbol">₹</span><span id="amount-due">0.00</span></p>
+
+        <div class="currency-notes">
+            <div class="currency-note">
+                <img src="500.jpg" alt="500 Note" class="note-image">
+                <input type="number" id="note-500" class="note-input" placeholder="Qty">
+                <span class="note-value">₹ 500</span>
+            </div>
+            <div class="currency-note">
+                <img src="100.webp" alt="100 Note" class="note-image">
+                <input type="number" id="note-100" class="note-input" placeholder="Qty">
+                <span class="note-value">₹ 100</span>
+            </div>
+            <div class="currency-note">
+                <img src="50.jpg" alt="50 Note" class="note-image">
+                <input type="number" id="note-50" class="note-input" placeholder="Qty">
+                <span class="note-value">₹ 50</span>
+            </div>
+        </div>
+
+        <div class="total-amount">
+            Total Amount Given: <span class="indian-currency-symbol">₹</span><span id="total-amount">0.00</span>
+        </div>
+
+        <div class="remaining-balance">
+            Remaining Balance: <span class="indian-currency-symbol">₹</span><span id="remaining-balance">0.00</span>
+        </div>
+
+        <a href="4.html" class="continue-button">Continue</a>
+    </div>
+
+    <script>
+        // Retrieve the bill amount from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const billAmount = parseFloat(urlParams.get('totalAmount'));
+
+        if (!isNaN(billAmount)) {
+            document.getElementById('amount-due').textContent = billAmount.toFixed(2);
+        }
+
+        const note500Input = document.getElementById('note-500');
+        const note100Input = document.getElementById('note-100');
+        const note50Input = document.getElementById('note-50');
+        const totalAmountSpan = document.getElementById('total-amount');
+        const remainingBalanceSpan = document.getElementById('remaining-balance');
+
+        [note500Input, note100Input, note50Input].forEach(input => {
+            input.addEventListener('input', calculateTotal);
+        });
+
+        function calculateTotal() {
+            const note500Qty = parseFloat(note500Input.value) || 0;
+            const note100Qty = parseFloat(note100Input.value) || 0;
+            const note50Qty = parseFloat(note50Input.value) || 0;
+
+            const totalAmount = (note500Qty * 500) + (note100Qty * 100) + (note50Qty * 50);
+            totalAmountSpan.textContent = totalAmount.toFixed(2);
+
+            const remainingBalance = totalAmount - billAmount;
+            remainingBalanceSpan.textContent = remainingBalance.toFixed(2);
+        }
+    </script>
+</body>
+</html>
